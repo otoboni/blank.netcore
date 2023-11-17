@@ -1,48 +1,150 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
+    <!-- Basic -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/layout/images/favicon.png" type="image/x-icon">
+
+    <title>Guarder</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/layout/css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,600,700&display=swap" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/layout/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/layout/css/responsive.css" rel="stylesheet" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="hero_area">
+        <!-- header section strats -->
+        <div class="hero_bg_box">
+            <div class="img-box">
+                <img src="/layout/images/hero-bg.jpg" alt="">
+            </div>
+        </div>
+
+        <header class="header_section">
+            <div class="header_top">
+                <div class="container-fluid">
+                    <div class="contact_link-container">
+                        <a href="" class="contact_link1">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>
+                                Lorem ipsum dolor sit amet,
+                            </span>
+                        </a>
+                        <a href="" class="contact_link2">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                                Call : +01 1234567890
+                            </span>
+                        </a>
+                        <a href="" class="contact_link3">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                                demo@gmail.com
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="header_bottom">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg custom_nav-container">
+                        <a class="navbar-brand" href="index.html">
+                            <span>
+                                Guarder
+                            </span>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class=""></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
+                            <ul class="navbar-nav  ">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="about.html"> About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="service.html"> Services </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="guard.html"> Guards </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="contact.html">Contact us</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <!-- end header section -->
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <!-- about section -->
+
+    @await Html.PartialAsync("_About")
+    @* <partial name="_About" /> *@
+
+    <!-- end about section -->
+    <!-- service section -->
+
+    <partial name="_Service" />
+
+    <!-- end service section -->
+    <!-- client section -->
+    @await Html.PartialAsync("_Client", new ViewDataDictionary(this.ViewData) { { "text", "What is says our clients" } })
+    @* <partial name="_Client" /> *@
+
+    <!-- end client section -->
+    <!-- contact section -->
+
+    <partial name="_Contact" />
+
+    <!-- end contact section -->
+    <!-- team section -->
+
+    <partial name="_Team" />
+
+    <!-- end team section -->
+    <!-- info section -->
+
+    <partial name="_Info" />
+
+    <!-- end info_section -->
+
+    <!-- footer section -->
+    <footer class="container-fluid footer_section">
+        <p>
+            &copy; <span id="currentYear"></span> All Rights Reserved. Design by
+            <a href="https://html.design/">Free Html Templates</a>
+        </p>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- footer section -->
+
+    <script src="/layout/js/jquery-3.4.1.min.js"></script>
+    <script src="/layout/js/bootstrap.js"></script>
+    <script src="/layout/js/custom.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
