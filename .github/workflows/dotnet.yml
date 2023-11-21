@@ -37,7 +37,7 @@ jobs:
     - name: Run SSH command
       uses: garygrossgarten/github-action-ssh@v0.3.0
       with:
-        command: sudo chmod u+x web && ./web
+        command: cd /home/ubuntu/website/deploy && sudo chmod u+x web && ./web
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         privateKey: ${{ secrets.REMOTE_SSH_KEY }}      
