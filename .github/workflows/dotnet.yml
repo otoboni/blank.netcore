@@ -18,7 +18,7 @@ jobs:
     - name: Login to OCI Registry
       run: |
         echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login ${{ secrets.OCI_REGISTRY }} \
-        -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
+        -u "${{ secrets.OCI_USERNAME }}" \
         --password-stdin
 
     - name: Build Docker image
