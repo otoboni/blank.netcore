@@ -45,17 +45,16 @@ jobs:
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.REMOTE_SSH_KEY }}
         script: |
+        
+          cd /home/ubuntu/guarder-services    
+
+          echo "IMAGE_TAG=${GITHUB_SHA::7}" > .env        
+          
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login ${{ secrets.OCI_REGISTRY }} \
           -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
           --password-stdin
 
           docker pull ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:${{ env.IMAGE_TAG }}
 
-          docker stop guarder-services || true
-          docker rm guarder-services || true
-
-          docker run -d \
-            --name guarder-services \
-            --restart always \
-            -p 5002:8080 \
-            ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:${{ env.IMAGE_TAG }}
+          docker compose pull
+          docker compose up -d          
