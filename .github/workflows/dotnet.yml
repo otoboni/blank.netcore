@@ -31,7 +31,7 @@ jobs:
       run: |
         docker buildx build \
           --platform linux/amd64,linux/arm64 \
-          -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest \
+          -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:latest \
           --push \
           ./web
 
@@ -46,13 +46,13 @@ jobs:
           -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
           --password-stdin
 
-          docker pull ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
+          docker pull ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:latest
 
-          docker stop webapp || true
-          docker rm webapp || true
+          docker stop guarder-services || true
+          docker rm guarder-services || true
 
           docker run -d \
-            --name webapp \
+            --name guarder-services \
             --restart always \
             -p 5002:80 \
-            ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
+            ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:latest
