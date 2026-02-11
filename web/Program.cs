@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 else
 {
     // Note que o UsePathBase deve vir cedo no pipeline
-    app.UsePathBase("/guarder");
+    //app.UsePathBase("/guarder");
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
