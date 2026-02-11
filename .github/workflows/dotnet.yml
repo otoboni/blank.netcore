@@ -21,16 +21,19 @@ jobs:
         -u "${{ secrets.OCI_USERNAME }}" \
         --password-stdin
 
-    - name: Build and Push ARM64 image
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+                
+    - name: Build and Push
       run: |
         docker buildx build \
-          --platform linux/arm64 \
+          --platform linux/amd64,linux/arm64 \
           -t ${{ secrets.OCI_REGISTRY }}/otoboni/webapp:latest \
           --push \
           ./web
-        - name: Push Docker image
-          run: |
-            docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
 
     - name: Deploy on VM
       uses: appleboy/ssh-action@v0.1.10
