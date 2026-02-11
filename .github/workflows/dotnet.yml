@@ -1,43 +1,52 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Deploy .NET App
+name: Deploy .NET Docker App
 
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
-  build:
-
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to OCI Registry
+      run: |
+        echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login ${{ secrets.OCI_REGISTRY }} \
+        -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
+        --password-stdin
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest .
+
+    - name: Push Docker image
+      run: |
+        docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
+
+    - name: Deploy on VM
+      uses: appleboy/ssh-action@v0.1.10
       with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore      
-    - name: Publish
-      run: dotnet publish web -c Release -o deploy -r linux-x64 --self-contained=true -p:PublishSingleFile=true
-    - name: Copy via ssh
-      uses: garygrossgarten/github-action-scp@v0.5.3
-      with:
-        local: /home/runner/work/blank.netcore/blank.netcore/deploy/
-        remote: ${{ secrets.REMOTE_TARGET }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.REMOTE_SSH_KEY }}
-    - name: Run SSH command
-      uses: garygrossgarten/github-action-ssh@v0.3.0
-      with:
-        command: cd /home/ubuntu/website/deploy && sudo chmod u+x web && ./web
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.REMOTE_SSH_KEY }}      
+        key: ${{ secrets.REMOTE_SSH_KEY }}
+        script: |
+          echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login ${{ secrets.OCI_REGISTRY }} \
+          -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
+          --password-stdin
+
+          docker pull ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
+
+          docker stop webapp || true
+          docker rm webapp || true
+
+          docker run -d \
+            --name webapp \
+            --restart always \
+            -p 5002:80 \
+            ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
