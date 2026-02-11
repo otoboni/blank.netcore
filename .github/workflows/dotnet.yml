@@ -21,13 +21,16 @@ jobs:
         -u "${{ secrets.OCI_USERNAME }}" \
         --password-stdin
 
-    - name: Build Docker image
+    - name: Build and Push ARM64 image
       run: |
-        docker build -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest .
-
-    - name: Push Docker image
-      run: |
-        docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
+        docker buildx build \
+          --platform linux/arm64 \
+          -t ${{ secrets.OCI_REGISTRY }}/otoboni/webapp:latest \
+          --push \
+          ./web
+        - name: Push Docker image
+          run: |
+            docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest
 
     - name: Deploy on VM
       uses: appleboy/ssh-action@v0.1.10
