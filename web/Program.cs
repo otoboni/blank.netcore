@@ -12,6 +12,8 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.MapHealthChecks("/health");
+
 // --- 2. Equivalente ao Configure (Middleware Pipeline) ---
 
 // Configuração de ambiente
@@ -44,7 +46,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.MapHealthChecks("/health");
 
 app.Run();
