@@ -1,9 +1,13 @@
 # Build stage
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /src
-COPY . .
+
+COPY *.sln .
+COPY web/*.csproj ./web/
 RUN dotnet restore
-RUN dotnet publish web -c Release -o /app/publish
+
+COPY . .
+RUN dotnet publish web -c Release -o /app/publish --no-restore
 
 # Runtime stage
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
