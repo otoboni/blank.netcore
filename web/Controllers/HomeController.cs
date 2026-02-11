@@ -23,7 +23,26 @@ namespace web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [Route("about")]
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        [Route("services")]
+        public IActionResult Services()
+        {
+            return View();
+        }
+
+        [Route("guards")]
+        public IActionResult Guards()
+        {
+            return View();
+        }
+
+        [Route("contact")]
+        public IActionResult Contact()
         {
             return View();
         }

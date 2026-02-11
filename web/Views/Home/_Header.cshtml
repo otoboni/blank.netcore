@@ -1,0 +1,70 @@
+﻿<header class="header_section">
+    <div class="header_top">
+        <div class="container-fluid">
+            <div class="contact_link-container">
+                <a href="" class="contact_link1">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span>
+                        Lorem ipsum dolor sit amet,
+                    </span>
+                </a>
+                <a href="" class="contact_link2">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <span>
+                        Call : +01 1234567890
+                    </span>
+                </a>
+                <a href="" class="contact_link3">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>
+                        demo@gmail.com
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="header_bottom">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+                <a class="navbar-brand" href="index.html">
+                    <span>
+                        Guarder
+                    </span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""></span>
+                </button>
+
+                @{
+                    // Obtém o nome da página/action atual da rota
+                    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                }
+
+                <ul class="navbar-nav">
+                    <li class="nav-item @(currentAction == "Index" && currentController == "Home" ? "active" : "")">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            Home @(currentAction == "Index" ? Html.Raw("<span class='sr-only'>(current)</span>") : "")
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(currentAction == "About" ? "active" : "")">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                    </li>
+
+                    <li class="nav-item @(currentAction == "Services" ? "active" : "")">
+                        <a class="nav-link" asp-controller="Home" asp-action="Services">Services</a>
+                    </li>
+
+                    <li class="nav-item @(currentAction == "Guards" ? "active" : "")">
+                        <a class="nav-link" asp-controller="Home" asp-action="Guards">Guards</a>
+                    </li>
+
+                    <li class="nav-item @(currentAction == "Contact" ? "active" : "")">
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact us</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
