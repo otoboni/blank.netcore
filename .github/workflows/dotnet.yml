@@ -31,7 +31,7 @@ jobs:
       run: |
         docker buildx build \
           --platform linux/amd64,linux/arm64 \
-          -t ${{ secrets.OCI_REGISTRY }}/otoboni/webapp:latest \
+          -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/webapp:latest \
           --push \
           ./web
 
