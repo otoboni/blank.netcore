@@ -38,17 +38,23 @@ jobs:
           --push \
           ./web
 
+    - name: Fail if tag empty
+      run: |
+        if [ -z "${IMAGE_TAG}" ]; then
+          echo "IMAGE_TAG is empty!"
+          exit 1
+        fi
+                    
     - name: Deploy on VM
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.REMOTE_SSH_KEY }}
-        script: |
-        
+        script: |        
           cd /home/ubuntu/guarder-services    
-
-          echo "IMAGE_TAG=${GITHUB_SHA::7}" > .env        
+          
+          echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" > .env
           
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login ${{ secrets.OCI_REGISTRY }} \
           -u "${{ secrets.OCI_NAMESPACE }}/${{ secrets.OCI_USERNAME }}" \
