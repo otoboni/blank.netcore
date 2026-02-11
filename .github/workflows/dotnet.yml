@@ -54,5 +54,5 @@ jobs:
           docker run -d \
             --name guarder-services \
             --restart always \
-            -p 5002:80 \
+            -p 5002:8080 \
             ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/guarder-services:latest
