@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // --- 1. Equivalente ao ConfigureServices ---
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // --- 2. Equivalente ao Configure (Middleware Pipeline) ---
@@ -42,5 +44,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHealthChecks("/health");
 
 app.Run();
